@@ -102,4 +102,44 @@ else:
     print "No pH value was given!"
     
 # Storing conditionals
+if age < 45:
+    if bmi < 22.0:
+        risk = 'low'
+    else:
+        risk = 'medium'
 
+else:
+    if bmi < 22.0:
+        risk = 'medium'
+    else:
+        risk = 'high'
+
+# Confusing!! A better way:
+young = age < 45
+slim = bmi < 22.0
+if young:
+    if slim:
+        risk = 'low'
+    else:
+        risk = 'medium'
+else:
+    if slim:
+        risk = 'medium'
+    else:
+        risk = 'high'
+
+# Even better:
+young = age < 45
+slim = bmi < 22.0
+if young and slim:
+    risk = 'low'
+elif young and not slim:
+    risk = 'medium'
+elif not young and slim:
+    risk = 'medium'
+elif not young and not slim:
+    risk = 'high'
+
+
+
+        
