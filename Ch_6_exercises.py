@@ -37,5 +37,3 @@ empty = False
 
 full + empty == 1
 
-# 5.
-
