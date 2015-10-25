@@ -14,4 +14,7 @@
 # Built around the idea that taking two sorted lists and merging them is
 # proportional to the number of items in both lists.
 
-
+# Things that can slow down search algorithms include:
+# Having to examine every item individually
+# Having to examine a higher proportion of items in the list
+# Inserting items individually
