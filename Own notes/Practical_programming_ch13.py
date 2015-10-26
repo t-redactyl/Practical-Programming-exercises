@@ -289,5 +289,168 @@ class Rectangle(object):
 # the area and contains methods would not need to change.
 
 # Polymorphism
+# This means an expression involving a variable can do different things
+# depending on the TYPE of the object to which the variable refers (i.e.,
+# string versus list). E.g., operator '+' does different things depending
+# on whether you are adding two strings or two integers.
 
+# To make the rectangle class polymorphic (i.e., so someone can make their
+# own rectangles), we need to properly encapsulate the class (i.e., so that
+# the user does not have to manually calculate things like maximum X, this
+# is instead done by a method written into the class). You can see in the 
+# example below that I have now included methods for calculating the 
+# minimum and maximum X and Y coordinates.
 
+class Rectangle(object):
+    '''Represent a rectangular section of an image.'''
+    
+    def __init__(self, x0, y0, x1, y1):
+        '''Create a rectangle with non-zero area. (x0, y0) is the lower left
+        corner, (x1, y1) is the upper right corner.'''
+        
+        self.x0 = x0
+        self.y0 = y0
+        self.x1 = x1
+        self.y1 = y1    
+        
+    def area(self):
+        '''Return the area of the rectangle.'''
+        
+        return (self.x1 - self.x0) * (self.y1 - self.y0)
+    
+    def contains(self, x, y):
+        '''Return True if (x, y) point is inside a rectangle, and False 
+        otherwise.'''
+        
+        return (self.x0 <= x <= self.x1) and \
+               (self.y0 <= y <= self.y1)
+    
+    def get_min_x(self):
+        '''Return the minimum X coordinate.'''
+        
+        return self.x0
+    
+    def get_min_y(self):
+        '''Return the minimum Y coordinate.'''
+        
+        return self.y0
+    
+    def get_max_x(self):
+        '''Return the maximum X coordinate.'''
+        
+        return self.x1
+    
+    def get_max_y(self):
+        '''Return the maximum Y coordinate.'''
+        
+        return self.y1
+
+# Inheritance
+
+class Organism(object):
+    '''A thing that lives in a tide pool.'''
+    
+    def __init__(self, name, x, y):
+        '''A living thing that is at location (x, y) in the tide pool.'''
+        
+        self.name = name
+        self.x = x
+        self.y = y
+    
+    def __str__(self):
+        '''Return a string representation of this Organism.'''
+        
+        return '(%s, [%s, %s])' % (self.name, self.x, self.y)
+    
+    def can_eat(self, food):
+        '''Report whether this Organism can eat the given food. Since we
+        don't know anything about what a generic organism eats, this always
+        returns False.'''
+        
+        return False
+    
+    def move(self):
+        '''Ask the organism to move. By default, this does nothing, since we
+        don't know anything about how fast or how far a generic organism would
+        move.'''
+        
+        return
+    
+# We can now create a new Organism, an Arthropod:
+
+class Arthropod(Organism):
+    pass
+
+# class Arthropod is a 'child' class which inherits the methods and instance
+# variables from the 'parent' class organism:
+
+blue_crab = Arthropod('Callinectes sapidus', 0, 0)
+print blue_crab
+
+# However, we want Arthopod to be more than just a generic Organism. As such, we
+# give it its own instance variables, methods, or both. Below, we add a leg number
+# constructor to Arthropod.
+
+class Arthropod(Organism):
+    '''An arthropod that has a fixed number of legs.'''
+    
+    def __init__(self, name, x, y, legs):
+        '''An arthropod with the given number of legs that exists at location
+        (x, y) in the tide pool.'''
+        
+        Organism.__init__(self, name, x, y) 
+        # We call the constructor from class Organism        
+        self.legs = legs
+        
+lobster = Arthropod('Homarus gammarus', 0, 0) # Will thrown an error
+lobster = Arthropod('Homarus gammarus', 0, 0, 10) # Correct
+print lobster
+
+# Note that the result from organism (not including the number of legs) is
+# printed. We need to override the __str__ method.
+
+class Arthropod(Organism):
+    '''An arthropod that has a fixed number of legs.'''
+    
+    def __init__(self, name, x, y, legs):
+        '''An arthropod with the given number of legs that exists at location
+        (x, y) in the tide pool.'''
+        
+        Organism.__init__(self, name, x, y)
+        self.legs = legs
+        
+    def __str__(self):
+        '''Return a string representation of this Arthropod.'''
+        
+        return '(%s, %s, [%s, %s])' % (self.name, self.legs, self.x, self.y)
+
+# A child class can also have methods that are not part of the parent class.
+
+class Arthropod(Organism):
+    '''An arthropod that has a fixed number of legs.'''
+    
+    def __init__(self, name, x, y, legs):
+        '''An arthropod with the given number of legs that exists at location
+        (x, y) in the tide pool.'''
+        
+        Organism.__init__(self, name, x, y)
+        self.legs = legs
+    
+    def __str__(self):
+        '''Return a string representation of this Arthropod.'''
+        
+        return '(%s, %s, [%s, %s])' % (self.name, self.legs, self.x, self.y)
+    
+    def is_decapod(self):
+        '''Return True is this Arthropod is a decapod.'''
+        
+        return self.legs == 10
+    
+    def leg_count(self):
+        '''Return the number of legs this Arthropod possesses.'''
+        
+        return self.legs
+
+lobster = Arthropod('Homarus gammarus', 0, 0, 10)
+lobster.is_decapod()
+lobster.leg_count()
